@@ -14,6 +14,8 @@ use Gitrub\Gateway\Database\Repository\DatabaseRepositoryGateway;
 use Gitrub\Gateway\Database\ScrapeState\DatabaseScrapeState;
 use Gitrub\Gateway\Database\User\DatabaseUserGateway;
 use Gitrub\Gateway\Github\RestApi\GithubPersonalAccessToken;
+use Gitrub\Gateway\Github\RestApi\Repository\RestAPIRepositoryGithubGateway;
+use Gitrub\Gateway\Github\RestApi\User\RestAPIUserGithubGateway;
 use Test\Gitrub\Gateway\Repository\MockRepositoryScrapeStateGateway;
 use Test\Gitrub\Gateway\User\MockUserScrapeStateGateway;
 
@@ -31,7 +33,11 @@ class GatewayInstances {
 	public static function default(): self {
 		$connection = (new PdoFromDatabaseConnectionData((new DatabaseConnectionStringParser(getenv('DATABASE_URI')))->parse()))
 			->connect();
-		$github_rest_api_gateway = new \Gitrub\Gateway\Github\RestApi\GithubRestAPIGateway(
+		$repository_github_gateway = new RestAPIRepositoryGithubGateway(
+			new \GuzzleHttp\Client(),
+			new GithubPersonalAccessToken(getenv('GITHUB_USERNAME'), getenv('GITHUB_TOKEN'))
+		);
+		$user_github_gateway = new RestAPIUserGithubGateway(
 			new \GuzzleHttp\Client(),
 			new GithubPersonalAccessToken(getenv('GITHUB_USERNAME'), getenv('GITHUB_TOKEN'))
 		);
@@ -41,10 +47,10 @@ class GatewayInstances {
 		$repository_scrape_state = new DatabaseScrapeState($connection, 'repositories');
 		return new self(
 			user_gateway: $user_gateway,
-			user_github_gateway: $github_rest_api_gateway,
+			user_github_gateway: $user_github_gateway,
 			user_scrape_state_gateway: $user_scrape_state,
 			repository_gateway: $repository_gateway,
-			repository_github_gateway: $github_rest_api_gateway,
+			repository_github_gateway: $repository_github_gateway,
 			repository_scrape_state_gateway: $repository_scrape_state,
 		);
 	}
