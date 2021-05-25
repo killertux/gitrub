@@ -6,6 +6,15 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
+    services:
+      db:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - uses: actions/checkout@v2
       - name: Cache composer dependencies
@@ -13,28 +22,15 @@ jobs:
         with:
           path: vendor
           key: composer-${{ hashFiles('composer.lock') }}
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop
-      - uses: mirromutth/mysql-action@v1.1
-        with:
-          host port: 3306
-          mysql version: '8.0'
-          mysql database: 'gitrub_test'
-          mysql root password: 'password'
       - uses: php-actions/composer@v5
         with:
           php_version: 8.0.6
           version: 2
           progress: yes
-      - name: Wait for MySQL
-        run: |
-          while ! mysqladmin ping --host=127.0.0.1 --password=password --silent; do
-            sleep 1
-          done
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v2
         env:
-          DATABASE_TEST_URI: 'mysql://root:password@localhost:3306/gitrub_test'
+          DATABASE_TEST_URI: 'mysql://root:password@db:3306/gitrub_test'
         with:
           php_version: 8.0.6
           bootstrap: vendor/autoload.php
