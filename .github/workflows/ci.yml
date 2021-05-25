@@ -5,7 +5,6 @@ on: [push]
 jobs:
   build-test:
     runs-on: ubuntu-latest
-
     services:
       mysql:
         image: mysql
@@ -39,12 +38,7 @@ jobs:
           extensions: pdo, pdo_mysql
       - name: Run Tests
         env:
-          DATABASE_TEST_URI: 'mysql://root:password@localhost:${{ job.services.mysql.ports[3306] }}/gitrub_test'
+          DATABASE_TEST_URI: 'mysql://root:password@127.0.0.1:3306/gitrub_test'
         run:
+          php bin/console.php reset test
           vendor/phpunit/phpunit/phpunit tests/
-#          DATABASE_TEST_URI: 'mysql://root:password@localhost:${{ job.services.mysql.ports[3306] }}/gitrub_test'
-#      with
-#          php_version: 8.0.6
-#          bootstrap: vendor/autoload.php
-#          configuration: tests/phpunit.xml
-#          php_extensions: pdo pdo_mysql
