@@ -20,6 +20,11 @@ jobs:
           mysql version: '8.0'
           mysql database: 'gitrub_test'
           mysql root password: 'password'
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping --host=127.0.0.1 --password=password --silent; do
+            sleep 1
+          done
       - uses: php-actions/composer@v5
         with:
           php_version: 8.0.6
