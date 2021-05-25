@@ -1,0 +1,34 @@
+{
+    "name": "killertux/gitrub",
+    "description": "A github data scrapper",
+    "type": "project",
+    "require": {
+        "ebanx/stream": "dev-master",
+        "guzzlehttp/guzzle": "^7.3",
+        "tiagohillebrandt/php-parse-link-header": "^1.0",
+        "steampixel/simple-php-router": "^0.7.0",
+        "ext-pdo": "*",
+        "byjg/migration": "4.2.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "fakerphp/faker": "^1.14"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Clemente",
+            "email": "bruno.canguru@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Gitrub\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\Gitrub\\": "tests/"
+        }
+    }
+}

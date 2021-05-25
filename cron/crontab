@@ -1,0 +1,2 @@
+* * * * * root flock -n /var/lock/repositories.lock /usr/local/bin/php /app/bin/console.php scrapeRepositories 300 >> /var/log/cron.log 2>&1
+* * * * * root flock -n /var/lock/users.lock /usr/local/bin/php /app/bin/console.php scrapeUsers 100 >> /var/log/cron.log 2>&1
