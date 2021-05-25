@@ -17,23 +17,24 @@ jobs:
         run: sudo service mysql stop
       - uses: mirromutth/mysql-action@v1.1
         with:
+          host port: 3306
           mysql version: '8.0'
           mysql database: 'gitrub_test'
           mysql root password: 'password'
-      - name: Wait for MySQL
-        run: |
-          while ! mysqladmin ping --host=127.0.0.1 --password=password --silent; do
-            sleep 1
-          done
       - uses: php-actions/composer@v5
         with:
           php_version: 8.0.6
           version: 2
           progress: yes
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping --host=127.0.0.1 --password=password --silent; do
+            sleep 1
+          done
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v2
         env:
-          DATABASE_TEST_URI: 'mysql://root:password@127.0.0.1:3306/gitrub_test'
+          DATABASE_TEST_URI: 'mysql://root:password@localhost:3306/gitrub_test'
         with:
           php_version: 8.0.6
           bootstrap: vendor/autoload.php
