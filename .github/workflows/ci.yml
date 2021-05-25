@@ -13,6 +13,12 @@ jobs:
         with:
           path: vendor
           key: composer-${{ hashFiles('composer.lock') }}
+
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '8.0'
+          mysql database: 'gitrub_test'
+          mysql root password: 'password'
       - uses: php-actions/composer@v5
         with:
           php_version: 8.0.6
@@ -20,6 +26,9 @@ jobs:
           progress: yes
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v2
+        env:
+          DATABASE_TEST_URI: 'mysql://root:password@db:3306/gitrub_test'
         with:
           php_version: 8.0.6
-          configuration: test/phpunit.xml
+          bootstrap: vendor/autoload.php
+          configuration: tests/phpunit.xml
