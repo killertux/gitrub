@@ -11,6 +11,7 @@ jobs:
         image: mysql
         env:
           MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: gitrub_test
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -30,7 +31,7 @@ jobs:
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v2
         env:
-          DATABASE_TEST_URI: 'mysql://root:password@127.0.0.1:${{ job.services.mysql.ports[3306] }}/gitrub_test'
+          DATABASE_TEST_URI: 'mysql://root:password@mysql:${{ job.services.mysql.ports[3306] }}/gitrub_test'
         with:
           php_version: 8.0.6
           bootstrap: vendor/autoload.php
