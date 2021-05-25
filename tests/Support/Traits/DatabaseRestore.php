@@ -13,7 +13,9 @@ trait DatabaseRestore {
 	/** @before */
 	public function setUpDatabase(): void {
 		(new EnvLoader())->load();
-		$this->pdo = (new PdoFromDatabaseConnectionData((new DatabaseConnectionStringParser(getenv('DATABASE_TEST_URI')))->parse()))
+		$connection_string = getenv('DATABASE_TEST_URI');
+		print_r($connection_string);
+		$this->pdo = (new PdoFromDatabaseConnectionData((new DatabaseConnectionStringParser($connection_string))->parse()))
 			->connect();
 		$this->pdo->exec('START TRANSACTION;');
 		$this->pdo->exec('SAVEPOINT test_start;');
