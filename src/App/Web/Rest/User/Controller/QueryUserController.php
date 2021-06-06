@@ -2,7 +2,7 @@
 
 namespace Gitrub\App\Web\Rest\User\Controller;
 
-use Gitrub\App\Web\Rest\Response\AsResponse;
+use Gitrub\App\Web\Response\AsResponse;
 use Gitrub\App\Web\Rest\User\Controller\Presenter\UserNotFoundPresenter;
 use Gitrub\App\Web\Rest\User\Controller\Presenter\UserPresenter;
 use Gitrub\Domain\User\Exception\UserNotFound;

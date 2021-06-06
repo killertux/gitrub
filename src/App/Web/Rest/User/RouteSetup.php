@@ -2,7 +2,7 @@
 
 namespace Gitrub\App\Web\Rest\User;
 
-use Gitrub\App\Web\Rest\Response\ResponseHandler;
+use Gitrub\App\Web\Response\ResponseHandler;
 use Gitrub\App\Web\Rest\User\Controller\ListUserController;
 use Gitrub\App\Web\Rest\User\Controller\QueryUserController;
 use Gitrub\App\Web\Rest\User\Controller\ScrapeUserController;

@@ -4,7 +4,7 @@ namespace Gitrub\App\Web\Rest\User\Controller;
 
 use Gitrub\App\Web\Rest\FromLimitFromQuery;
 use Gitrub\App\Web\Rest\Presenter\InvalidArgumentExceptionPresenter;
-use Gitrub\App\Web\Rest\Response\AsResponse;
+use Gitrub\App\Web\Response\AsResponse;
 use Gitrub\App\Web\Rest\User\Controller\Presenter\UserCollectionPresenter;
 use Gitrub\Domain\General\FromLimit;
 use Gitrub\Domain\User\Gateway\UserGateway;

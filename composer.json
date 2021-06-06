@@ -8,7 +8,8 @@
         "tiagohillebrandt/php-parse-link-header": "^1.0",
         "steampixel/simple-php-router": "^0.7.0",
         "ext-pdo": "*",
-        "byjg/migration": "4.2.*"
+        "byjg/migration": "4.2.*",
+        "webonyx/graphql-php": "^14.8"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

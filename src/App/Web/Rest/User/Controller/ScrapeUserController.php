@@ -3,8 +3,8 @@
 namespace Gitrub\App\Web\Rest\User\Controller;
 
 use Gitrub\App\Web\Rest\Presenter\InvalidArgumentExceptionPresenter;
-use Gitrub\App\Web\Rest\Response\AsResponse;
-use Gitrub\App\Web\Rest\Response\Response;
+use Gitrub\App\Web\Response\AsResponse;
+use Gitrub\App\Web\Response\Response;
 use Gitrub\App\Web\Rest\User\Controller\Presenter\UserGithubGatewayErrorPresenter;
 use Gitrub\Domain\General\FromLimit;
 use Gitrub\Domain\User\Exception\UserGithubGatewayError;

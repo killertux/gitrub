@@ -5,7 +5,7 @@ namespace Gitrub\App\Web\Rest\Repository;
 use Gitrub\App\Web\Rest\Repository\Controller\ListRepositoryController;
 use Gitrub\App\Web\Rest\Repository\Controller\QueryRepositoryController;
 use Gitrub\App\Web\Rest\Repository\Controller\ScrapeRepositoryController;
-use Gitrub\App\Web\Rest\Response\ResponseHandler;
+use Gitrub\App\Web\Response\ResponseHandler;
 use Gitrub\Domain\Repository\Gateway\RepositoryGateway;
 use Gitrub\Domain\Repository\Gateway\RepositoryGithubGateway;
 use Gitrub\Domain\Repository\Gateway\RepositoryScrapeStateGateway;
