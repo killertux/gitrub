@@ -5,7 +5,7 @@ namespace Gitrub\App\Web\Rest\Repository\Controller;
 use Gitrub\App\Web\Rest\FromLimitFromQuery;
 use Gitrub\App\Web\Rest\Presenter\InvalidArgumentExceptionPresenter;
 use Gitrub\App\Web\Rest\Repository\Controller\Presenter\RepositoryCollectionPresenter;
-use Gitrub\App\Web\Rest\Response\AsResponse;
+use Gitrub\App\Web\Response\AsResponse;
 use Gitrub\Domain\General\FromLimit;
 use Gitrub\Domain\Repository\Gateway\RepositoryGateway;
 use Gitrub\Domain\Repository\UseCase\ListRepositoryUseCase;

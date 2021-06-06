@@ -2,8 +2,8 @@
 
 namespace Gitrub\App\Web\Rest\User\Controller\Presenter;
 
-use Gitrub\App\Web\Rest\Response\AsResponse;
-use Gitrub\App\Web\Rest\Response\Response;
+use Gitrub\App\Web\Response\AsResponse;
+use Gitrub\App\Web\Response\Response;
 use Gitrub\Domain\User\Exception\UserNotFound;
 
 class UserNotFoundPresenter implements AsResponse {

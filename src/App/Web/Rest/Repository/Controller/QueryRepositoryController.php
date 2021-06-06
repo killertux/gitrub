@@ -4,7 +4,7 @@ namespace Gitrub\App\Web\Rest\Repository\Controller;
 
 use Gitrub\App\Web\Rest\Repository\Controller\Presenter\RepositoryNotFoundPresenter;
 use Gitrub\App\Web\Rest\Repository\Controller\Presenter\RepositoryPresenter;
-use Gitrub\App\Web\Rest\Response\AsResponse;
+use Gitrub\App\Web\Response\AsResponse;
 use Gitrub\Domain\Repository\Exception\RepositoryNotFound;
 use Gitrub\Domain\Repository\Gateway\RepositoryGateway;
 use Gitrub\Domain\Repository\UseCase\QueryRepositoryUseCase;

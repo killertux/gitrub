@@ -3,8 +3,8 @@
 namespace Gitrub\App\Web\Rest;
 
 use Gitrub\App\GatewayInstances;
-use Gitrub\App\Web\Rest\Response\Response;
-use Gitrub\App\Web\Rest\Response\ResponseHandler;
+use Gitrub\App\Web\Response\Response;
+use Gitrub\App\Web\Response\ResponseHandler;
 use Gitrub\App\Web\Rest\User;
 use Steampixel\Route;
 
