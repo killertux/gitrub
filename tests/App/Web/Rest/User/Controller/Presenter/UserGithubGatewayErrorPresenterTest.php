@@ -12,7 +12,7 @@ class UserGithubGatewayErrorPresenterTest extends GitrubTestCase {
 	public function testAsResponse() : void {
 		self::assertEquals(
 			new Response(
-				httpCode: 500,
+				http_code: 500,
 				body: '{"error":"Internal github error"}'
 			),
 			(new UserGithubGatewayErrorPresenter(

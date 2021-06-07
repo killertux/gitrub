@@ -11,7 +11,7 @@ class UserNotFoundPresenterTest extends GitrubTestCase {
 	public function testAsResponse(): void {
 		$exception = new UserNotFound($message = 'User not found with login test');
 		$response = (new UserNotFoundPresenter($exception))->asResponse();
-		self::assertEquals(404, $response->httpCode);
+		self::assertEquals(404, $response->http_code);
 		self::assertEquals("{\"error\":\"$message\"}", $response->body);
 	}
 }

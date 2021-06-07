@@ -14,7 +14,7 @@ class UserGithubGatewayErrorPresenter implements AsResponse {
 
 	public function asResponse(): Response {
 		return new Response(
-			httpCode: 500,
+			http_code: 500,
 			body: json_encode(['error' => $this->user_github_gateway_error->getMessage()])
 		);
 	}

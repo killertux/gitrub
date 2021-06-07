@@ -2,8 +2,6 @@
 
 namespace Gitrub\App\Web\Rest\Repository\Controller;
 
-use Gitrub\App\Web\Rest\Presenter\InvalidArgumentExceptionPresenter;
-use Gitrub\App\Web\Rest\Repository\Controller\Presenter\RepositoryGithubGatewayErrorPresenter;
 use Gitrub\App\Web\Response\AsResponse;
 use Gitrub\App\Web\Response\Response;
 use Gitrub\Domain\General\FromLimit;
@@ -22,20 +20,14 @@ class ScrapeRepositoryController {
 	) {}
 
 	public function scrapeRepositories(): AsResponse {
-		try {
-			$from = $_GET['from'] ?? null;
-			$limit = $_GET['limit'] ?? 100;
+        $from = $_GET['from'] ?? null;
+        $limit = $_GET['limit'] ?? 100;
 
-			$this->executeUseCase($from ? (int)$from : null, (int)$limit);
-			return new Response(
-				httpCode: 200,
-				body: json_encode(['message' => 'done'])
-			);
-		} catch (\InvalidArgumentException $invalid_argument_exception) {
-			return new InvalidArgumentExceptionPresenter($invalid_argument_exception);
-		} catch (RepositoryGithubGatewayError $repository_github_gateway_error) {
-			return new RepositoryGithubGatewayErrorPresenter($repository_github_gateway_error);
-		}
+        $this->executeUseCase($from ? (int)$from : null, (int)$limit);
+        return new Response(
+            http_code: 200,
+            body: json_encode(['message' => 'done'])
+        );
 	}
 
 	/** @throws RepositoryGithubGatewayError */

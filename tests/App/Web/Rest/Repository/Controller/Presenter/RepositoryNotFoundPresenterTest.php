@@ -11,7 +11,7 @@ class RepositoryNotFoundPresenterTest extends GitrubTestCase {
 
 	public function testAsResponse(): void {
 		self::assertEquals(
-			new Response(httpCode: 404, body: '{"error":"Repository not found with full name invalid-repository"}'),
+			new Response(http_code: 404, body: '{"error":"Repository not found with full name invalid-repository"}'),
 			(new RepositoryNotFoundPresenter(new RepositoryNotFound('Repository not found with full name invalid-repository')))
 				->asResponse()
 		);

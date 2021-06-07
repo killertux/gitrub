@@ -14,7 +14,7 @@ class RepositoryPresenter implements AsResponse {
 
 	public function asResponse(): Response {
 		return new Response(
-			httpCode: 200,
+			http_code: 200,
 			body: json_encode($this->repository),
 		);
 	}

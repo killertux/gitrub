@@ -11,7 +11,7 @@ class InvalidArgumentExceptionPresenterTest extends GitrubTestCase {
 		$response = (new InvalidArgumentExceptionPresenter(
 			new \InvalidArgumentException("Limit must be a positive number"),
 		))->asResponse();
-		self::assertEquals(400, $response->httpCode);
+		self::assertEquals(400, $response->http_code);
 		self::assertEquals(
 			'{"error":"Limit must be a positive number"}',
 			$response->body

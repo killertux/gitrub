@@ -11,7 +11,7 @@ class UserCollectionPresenterTest extends GitrubTestCase {
 	public function testAsResponseEmptyCollection(): void {
 		$collection = new UserCollection(new \ArrayIterator([]));
 		$response = (new UserCollectionPresenter($collection))->asResponse();
-		self::assertEquals(200, $response->httpCode);
+		self::assertEquals(200, $response->http_code);
 		self::assertEquals('[]', $response->body);
 	}
 
@@ -19,7 +19,7 @@ class UserCollectionPresenterTest extends GitrubTestCase {
 		$users = [$this->faker->user(), $this->faker->user()];
 		$response = (new UserCollectionPresenter(new UserCollection(new \ArrayIterator($users))))
 			->asResponse();
-		self::assertEquals(200, $response->httpCode);
+		self::assertEquals(200, $response->http_code);
 		self::assertEquals(json_encode($users), $response->body);
 	}
 }
