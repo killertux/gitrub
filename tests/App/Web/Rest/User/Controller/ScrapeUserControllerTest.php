@@ -66,27 +66,6 @@ class ScrapeUserControllerTest extends GitrubTestCase {
 		);
 	}
 
-	public function testPassingNegativeLimit(): void {
-		$_GET['limit'] = -1;
-		$response = (new ScrapeUserController(
-			new MockUserGateway([]),
-			new MockUserGithubGateway([]),
-			new MockUserScrapeStateGateway(),
-		))->scrapeUsers()->asResponse();
-		self::assertEquals(400, $response->httpCode);
-		self::assertEquals('{"error":"Limit must be a positive number"}', $response->body);
-	}
-
-	public function testErrorInGithub(): void {
-		$response = (new ScrapeUserController(
-			new MockUserGateway([]),
-			$this->createFailingGithubGateway(),
-			new MockUserScrapeStateGateway(),
-		))->scrapeUsers()->asResponse();
-		self::assertEquals(500, $response->httpCode);
-		self::assertEquals('{"error":"Internal github error"}', $response->body);
-	}
-
 	private function createsABunchOfUsers(int $n_users): array {
 		return Stream::rangeInt(1, $n_users)
 			->map(fn($_) => $this->faker->user())
@@ -95,13 +74,5 @@ class ScrapeUserControllerTest extends GitrubTestCase {
 
 	private function assertDone(Response $response): void {
 		self::assertEquals(new Response(200, '{"message":"done"}'), $response);
-	}
-
-	private function createFailingGithubGateway(): UserGithubGateway {
-		return new class implements UserGithubGateway {
-			public function listUsers(FromLimit $from_limit): UserCollection {
-				throw new UserGithubGatewayError('Internal github error');
-			}
-		};
 	}
 }

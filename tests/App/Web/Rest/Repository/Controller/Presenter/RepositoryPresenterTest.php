@@ -11,7 +11,7 @@ class RepositoryPresenterTest extends GitrubTestCase {
 	public function testAsResponse() {
 		$repository = $this->faker->repository();
 		self::assertEquals(
-			new Response(httpCode: 200, body: json_encode($repository)),
+			new Response(http_code: 200, body: json_encode($repository)),
 			(new RepositoryPresenter($repository))->asResponse()
 		);
 	}

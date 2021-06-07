@@ -10,7 +10,7 @@ class UserPresenterTest extends GitrubTestCase {
 	public function testAsResponse(): void {
 		$user = $this->faker->user();
 		$response = (new UserPresenter($user))->asResponse();
-		self::assertEquals(200, $response->httpCode);
+		self::assertEquals(200, $response->http_code);
 		self::assertEquals(json_encode($user), $response->body);
 	}
 }

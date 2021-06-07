@@ -5,7 +5,7 @@ namespace Gitrub\App\Web\Response;
 class Response implements AsResponse {
 
 	public function __construct(
-		public int $httpCode,
+		public int $http_code,
 		public string $body,
 	) {}
 

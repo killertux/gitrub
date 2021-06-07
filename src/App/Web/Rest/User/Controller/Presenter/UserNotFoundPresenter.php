@@ -14,7 +14,7 @@ class UserNotFoundPresenter implements AsResponse {
 
 	public function asResponse(): Response {
 		return new Response(
-			httpCode: 404,
+			http_code: 404,
 			body: json_encode(['error' => $this->user_not_found->getMessage()]),
 		);
 	}

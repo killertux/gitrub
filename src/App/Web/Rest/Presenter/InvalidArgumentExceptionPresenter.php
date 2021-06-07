@@ -13,7 +13,7 @@ class InvalidArgumentExceptionPresenter implements AsResponse {
 
 	public function asResponse(): Response {
 		return new Response(
-			httpCode: 400,
+			http_code: 400,
 			body: json_encode(
 				['error' => $this->invalid_argument_exception->getMessage()]
 			),

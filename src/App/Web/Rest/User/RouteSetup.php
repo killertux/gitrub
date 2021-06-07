@@ -2,22 +2,26 @@
 
 namespace Gitrub\App\Web\Rest\User;
 
-use Gitrub\App\Web\Response\ResponseHandler;
+use Gitrub\App\Web\Rest\Presenter\InvalidArgumentExceptionPresenter;
 use Gitrub\App\Web\Rest\User\Controller\ListUserController;
+use Gitrub\App\Web\Rest\User\Controller\Presenter\UserGithubGatewayErrorPresenter;
+use Gitrub\App\Web\Rest\User\Controller\Presenter\UserNotFoundPresenter;
 use Gitrub\App\Web\Rest\User\Controller\QueryUserController;
 use Gitrub\App\Web\Rest\User\Controller\ScrapeUserController;
+use Gitrub\App\Web\Router\Router;
+use Gitrub\Domain\User\Exception\UserGithubGatewayError;
+use Gitrub\Domain\User\Exception\UserNotFound;
 use Gitrub\Domain\User\Gateway\UserGateway;
 use Gitrub\Domain\User\Gateway\UserGithubGateway;
 use Gitrub\Domain\User\Gateway\UserScrapeStateGateway;
-use Steampixel\Route;
 
 class RouteSetup {
 
 	public function __construct(
+	    private Router $router,
 		private UserGateway $user_gateway,
 		private UserGithubGateway $user_github_gateway,
 		private UserScrapeStateGateway $user_scrape_state_gateway,
-		private ResponseHandler $response_handler,
 	) {}
 
 	public function setup(): void {
@@ -25,14 +29,14 @@ class RouteSetup {
 		$query_user_controller = new QueryUserController($this->user_gateway);
 		$scrape_user_controller = new ScrapeUserController($this->user_gateway, $this->user_github_gateway, $this->user_scrape_state_gateway);
 
-		Route::add('/users', $this->handle([$list_user_controller, 'listUsers']));
-		Route::add('/adminUsers', $this->handle([$list_user_controller, 'listAdminUsers']));
-		Route::add('/user/([0-9]*)', $this->handle([$query_user_controller, 'getUserById']));
-		Route::add('/user/login/([A-Za-z-0-9]*)', $this->handle([$query_user_controller, 'getUserByLogin']));
-		Route::add('/user/scrape', $this->handle([$scrape_user_controller, 'scrapeUsers']), 'post');
-	}
-
-	private function handle(callable $callable): callable {
-		return fn (...$params) => $this->response_handler->handle($callable(...$params));
+		$this->router->addRoute('/users', [$list_user_controller, 'listUsers'])
+            ->addRoute('/users', [$list_user_controller, 'listUsers'])
+            ->addRoute('/adminUsers', [$list_user_controller, 'listAdminUsers'])
+            ->addRoute('/user/([0-9]*)', [$query_user_controller, 'getUserById'])
+            ->addRoute('/user/login/([A-Za-z-0-9]*)',[$query_user_controller, 'getUserByLogin'])
+            ->addRoute('/user/scrape', [$scrape_user_controller, 'scrapeUsers'], 'POST')
+            ->addExceptionPresenter(\InvalidArgumentException::class, InvalidArgumentExceptionPresenter::class)
+            ->addExceptionPresenter(UserNotFound::class, UserNotFoundPresenter::class)
+            ->addExceptionPresenter(UserGithubGatewayError::class, UserGithubGatewayErrorPresenter::class);
 	}
 }
