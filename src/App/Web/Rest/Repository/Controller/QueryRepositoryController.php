@@ -2,6 +2,7 @@
 
 namespace Gitrub\App\Web\Rest\Repository\Controller;
 
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Response\AsResponse;
 use Gitrub\App\Web\Rest\Repository\Controller\Presenter\RepositoryPresenter;
 use Gitrub\Domain\Repository\Gateway\RepositoryGateway;
@@ -13,14 +14,14 @@ class QueryRepositoryController {
 		private RepositoryGateway $repository_gateway
 	) {}
 
-	public function getRepositoryByFullName(string $full_name): AsResponse {
+	public function getRepositoryByFullName(Request $_, string $full_name): AsResponse {
 		return new RepositoryPresenter(
             (new QueryRepositoryUseCase($this->repository_gateway))
                 ->getRepositoryByFullName($full_name)
         );
 	}
 
-	public function getRepositoryById(int $id): AsResponse {
+	public function getRepositoryById(Request $_,int $id): AsResponse {
 		return new RepositoryPresenter(
             (new QueryRepositoryUseCase($this->repository_gateway))
                 ->getRepositoryById($id)

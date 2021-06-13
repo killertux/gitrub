@@ -2,21 +2,17 @@
 
 namespace Test\Gitrub\App\Web\Rest\Repository;
 
-use Gitrub\App\Web\Rest\Repository\RouteSetup;
 use Gitrub\Domain\General\FromLimit;
 use Gitrub\Domain\Repository\Collection\RepositoryCollection;
 use Gitrub\Domain\Repository\Exception\RepositoryGithubGatewayError;
 use Gitrub\Domain\Repository\Gateway\RepositoryGithubGateway;
-use PHPUnit\Framework\TestCase;
 use Test\Gitrub\App\Web\Response\MockResponseHandler;
 use Test\Gitrub\GitrubTestCase;
 use Test\Gitrub\Support\Traits\FakeRequest;
-use Test\Gitrub\Support\Traits\GetGlobalCleaner;
 
 class RouteSetupTest extends GitrubTestCase {
 
     use FakeRequest;
-    use GetGlobalCleaner;
 
     public function testGetRepositoryByIdNotFound(): void {
         $response_handler = new MockResponseHandler();
@@ -37,10 +33,9 @@ class RouteSetupTest extends GitrubTestCase {
     }
 
     public function testPassingNegativeLimitToScrape(): void {
-        $_GET['limit'] = -1;
         $response_handler = new MockResponseHandler();
         $web_app = $this->buildWebApp($response_handler);
-        $this->fakeRequest($web_app, '/repository/scrape', 'POST');
+        $this->fakeRequest($web_app, '/repository/scrape', 'POST', ['limit' => -1]);
 
         self::assertEquals(400, $response_handler->last_response->http_code);
         self::assertEquals('{"error":"Limit must be a positive number"}', $response_handler->last_response->body);

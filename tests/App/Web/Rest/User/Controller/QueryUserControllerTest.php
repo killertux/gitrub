@@ -2,6 +2,7 @@
 
 namespace Test\Gitrub\App\Web\Rest\User\Controller;
 
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Rest\User\Controller\Presenter\UserPresenter;
 use Gitrub\App\Web\Rest\User\Controller\QueryUserController;
 use Test\Gitrub\Gateway\User\MockUserGateway;
@@ -13,7 +14,7 @@ class QueryUserControllerTest extends GitrubTestCase {
 		$user = $this->faker->user();
 
 		$response = (new QueryUserController(new MockUserGateway([$user])))
-			->getUserByLogin($user->login)
+			->getUserByLogin(Request::empty(), $user->login)
 			->asResponse();
 		$expected_response = (new UserPresenter($user))->asResponse();
 
@@ -24,7 +25,7 @@ class QueryUserControllerTest extends GitrubTestCase {
 		$user = $this->faker->user();
 
 		$response = (new QueryUserController(new MockUserGateway([$user])))
-			->getUserById($user->id)
+			->getUserById(Request::empty(), $user->id)
 			->asResponse();
 		$expected_response = (new UserPresenter($user))->asResponse();
 

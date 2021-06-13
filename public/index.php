@@ -6,4 +6,4 @@ require_once __DIR__ . '/../vendor/autoload.php';
 (new \Gitrub\App\Web\WebApp(
 	\Gitrub\App\GatewayInstances::default(),
 	new \Gitrub\App\Web\Response\EchoResponseHandler(),
-))->run();
+))->run(\Gitrub\App\Web\Request\Request::create());

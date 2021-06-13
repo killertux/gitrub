@@ -3,21 +3,19 @@
 namespace Test\Gitrub\App\Web\Rest\User\Controller;
 
 use EBANX\Stream\Stream;
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Rest\User\Controller\ListUserController;
 use Gitrub\App\Web\Rest\User\Controller\Presenter\UserCollectionPresenter;
 use Gitrub\Domain\User\Collection\UserCollection;
 use Test\Gitrub\Gateway\User\MockUserGateway;
 use Test\Gitrub\GitrubTestCase;
-use Test\Gitrub\Support\Traits\GetGlobalCleaner;
 
 class ListUserControllerTest extends GitrubTestCase {
-
-	use GetGlobalCleaner;
 
 	public function testListUsersWithDefaultParams(): void {
 		$users = $this->faker->createsABunchOfUsers(n_users: 51);
 		$response = (new ListUserController(new MockUserGateway($users)))
-			->listUsers()
+			->listUsers(Request::empty())
 			->asResponse();
 
 		$expected_response = (new UserCollectionPresenter(
@@ -31,11 +29,9 @@ class ListUserControllerTest extends GitrubTestCase {
 
 	public function testListUsersPassingParams(): void {
 		$users = $this->faker->createsABunchOfUsers(n_users: 12);
-		$_GET['from'] = $users[0]->id + 1;
-		$_GET['limit'] = 10;
 
 		$response = (new ListUserController(new MockUserGateway($users)))
-			->listUsers()
+			->listUsers(new Request(['from' => $users[0]->id + 1, 'limit' => 10]))
 			->asResponse();
 
 		$expected_response = (new UserCollectionPresenter(
@@ -50,7 +46,7 @@ class ListUserControllerTest extends GitrubTestCase {
 	public function testListAdminUsersWithDefaultParams(): void {
 		$users = $this->faker->createsABunchOfAdminUsers(n_users: 51);
 		$response = (new ListUserController(new MockUserGateway($users)))
-			->listAdminUsers()
+			->listAdminUsers(Request::empty())
 			->asResponse();
 
 		$expected_response = (new UserCollectionPresenter(
@@ -68,7 +64,7 @@ class ListUserControllerTest extends GitrubTestCase {
 		$_GET['limit'] = 10;
 
 		$response = (new ListUserController(new MockUserGateway($users)))
-			->listAdminUsers()
+			->listAdminUsers(new Request(['from' => $users[0]->id + 1, 'limit' => 10]))
 			->asResponse();
 
 		$expected_response = (new UserCollectionPresenter(

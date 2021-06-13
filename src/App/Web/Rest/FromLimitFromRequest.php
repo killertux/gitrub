@@ -2,9 +2,10 @@
 
 namespace Gitrub\App\Web\Rest;
 
+use Gitrub\App\Web\Request\Request;
 use Gitrub\Domain\General\FromLimit;
 
-class FromLimitFromQuery {
+class FromLimitFromRequest {
 
 	public function __construct(
 		private int $default_from,
@@ -12,10 +13,10 @@ class FromLimitFromQuery {
 	) {}
 
 	/** @throws \InvalidArgumentException */
-	public function fromLimit(): FromLimit {
+	public function fromLimit(Request $request): FromLimit {
 		return new FromLimit(
-			$_GET['from'] ?? $this->default_from,
-			$_GET['limit'] ?? $this->default_limit,
+			$request->query['from'] ?? $this->default_from,
+            $request->query['limit'] ?? $this->default_limit,
 		);
 	}
 }

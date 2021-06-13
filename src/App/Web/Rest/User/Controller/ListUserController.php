@@ -2,8 +2,9 @@
 
 namespace Gitrub\App\Web\Rest\User\Controller;
 
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Response\AsResponse;
-use Gitrub\App\Web\Rest\FromLimitFromQuery;
+use Gitrub\App\Web\Rest\FromLimitFromRequest;
 use Gitrub\App\Web\Rest\User\Controller\Presenter\UserCollectionPresenter;
 use Gitrub\Domain\General\FromLimit;
 use Gitrub\Domain\User\Gateway\UserGateway;
@@ -15,24 +16,24 @@ class ListUserController {
 		private UserGateway $user_gateway,
 	) {}
 
-	public function listUsers(): AsResponse {
+	public function listUsers(Request $request): AsResponse {
 	    return new UserCollectionPresenter(
 	        (new ListUserUseCase($this->user_gateway))
-                ->listUsers($this->createFromLimit())
+                ->listUsers($this->createFromLimit($request))
         );
 	}
 
-	public function listAdminUsers(): AsResponse {
+	public function listAdminUsers(Request $request): AsResponse {
         return new UserCollectionPresenter(
             (new ListUserUseCase($this->user_gateway))
-                ->listADminUsers($this->createFromLimit())
+                ->listADminUsers($this->createFromLimit($request))
         );
 	}
 
-	private function createFromLimit(): FromLimit {
-		return (new FromLimitFromQuery(
+	private function createFromLimit(Request $request): FromLimit {
+		return (new FromLimitFromRequest(
 			default_from: 0,
 			default_limit: 50
-		))->fromLimit();
+		))->fromLimit($request);
 	}
 }

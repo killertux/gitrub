@@ -2,8 +2,9 @@
 
 namespace Gitrub\App\Web\Rest\Repository\Controller;
 
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Response\AsResponse;
-use Gitrub\App\Web\Rest\FromLimitFromQuery;
+use Gitrub\App\Web\Rest\FromLimitFromRequest;
 use Gitrub\App\Web\Rest\Repository\Controller\Presenter\RepositoryCollectionPresenter;
 use Gitrub\Domain\General\FromLimit;
 use Gitrub\Domain\Repository\Gateway\RepositoryGateway;
@@ -12,41 +13,41 @@ use Gitrub\Domain\Repository\UseCase\ListRepositoryUseCase;
 class ListRepositoryController {
 
 	public function __construct(
-		private RepositoryGateway $repository_gateway
+		private RepositoryGateway $repository_gateway,
 	) {}
 
-	public function listRepositories(): AsResponse {
+	public function listRepositories(Request $request): AsResponse {
 		return new RepositoryCollectionPresenter(
             (new ListRepositoryUseCase($this->repository_gateway))
-                ->listRepositories($this->createFromLimit())
+                ->listRepositories($this->createFromLimit($request))
         );
 	}
 
-	public function listForkRepositories(): AsResponse {
+	public function listForkRepositories(Request $request): AsResponse {
 		return new RepositoryCollectionPresenter(
             (new ListRepositoryUseCase($this->repository_gateway))
-                ->listForkRepositories($this->createFromLimit())
+                ->listForkRepositories($this->createFromLimit($request))
         );
 	}
 
-	public function listRepositoriesFromOwner(int $owner_id): AsResponse {
+	public function listRepositoriesFromOwner(Request $request, int $owner_id): AsResponse {
 		return new RepositoryCollectionPresenter(
             (new ListRepositoryUseCase($this->repository_gateway))
-                ->listRepositoriesFromOwner($owner_id, $this->createFromLimit())
+                ->listRepositoriesFromOwner($owner_id, $this->createFromLimit($request))
         );
 	}
 
-	public function listRepositoriesWithName(string $name): AsResponse {
+	public function listRepositoriesWithName(Request $request, string $name): AsResponse {
 		return new RepositoryCollectionPresenter(
             (new ListRepositoryUseCase($this->repository_gateway))
-                ->listRepositoriesWithName($name, $this->createFromLimit())
+                ->listRepositoriesWithName($name, $this->createFromLimit($request))
         );
 	}
 
-	private function createFromLimit(): FromLimit {
-		return (new FromLimitFromQuery(
+	private function createFromLimit(Request $request): FromLimit {
+		return (new FromLimitFromRequest(
 			default_from: 0,
 			default_limit: 50
-		))->fromLimit();
+		))->fromLimit($request);
 	}
 }

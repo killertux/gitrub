@@ -2,6 +2,7 @@
 
 namespace Gitrub\App\Web\Rest\Repository\Controller;
 
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Response\AsResponse;
 use Gitrub\App\Web\Response\Response;
 use Gitrub\Domain\General\FromLimit;
@@ -19,9 +20,9 @@ class ScrapeRepositoryController {
 		private RepositoryScrapeStateGateway $repository_scrape_state_gateway,
 	) {}
 
-	public function scrapeRepositories(): AsResponse {
-        $from = $_GET['from'] ?? null;
-        $limit = $_GET['limit'] ?? 100;
+	public function scrapeRepositories(Request $request): AsResponse {
+        $from = $request->query['from'] ?? null;
+        $limit = $request->query['limit'] ?? 100;
 
         $this->executeUseCase($from ? (int)$from : null, (int)$limit);
         return new Response(
