@@ -3,6 +3,7 @@
 namespace Gitrub\App\Web\Rest;
 
 use Gitrub\App\GatewayInstances;
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Rest\User;
 use Gitrub\App\Web\Router\Router;
 

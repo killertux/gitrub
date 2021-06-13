@@ -4,6 +4,7 @@
 namespace Gitrub\App\Web\Router;
 
 
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Response\Response;
 use Gitrub\App\Web\Response\ResponseHandler;
 use Steampixel\Route;
@@ -11,6 +12,7 @@ use Steampixel\Route;
 class Router {
 
     private array $exception_presenters = [];
+    private Request $request;
 
     public function __construct(
         private ResponseHandler $response_handler,
@@ -30,8 +32,9 @@ class Router {
         return $this;
     }
 
-    public function run(): void {
+    public function run(Request $request): void {
         $this->handlePathAndMethodNotFound();
+        $this->request = $request;
         Route::run('', true, false, true);
     }
 
@@ -58,9 +61,9 @@ class Router {
     private function handler(callable $closure): callable {
         return function (...$params) use ($closure) {
             try {
-                $response = $closure(...$params);
+                $response = $closure($this->request, ...$params);
             } catch (\Exception $exception) {
-                if ($this->exception_presenters[$exception::class]) {
+                if (array_key_exists($exception::class, $this->exception_presenters)) {
                     $response = new $this->exception_presenters[$exception::class]($exception);
                 } else {
                     throw $exception;

@@ -2,14 +2,12 @@
 
 namespace Test\Gitrub\App\Web\Rest;
 
-use Gitrub\App\Web\Rest\FromLimitFromQuery;
+use Gitrub\App\Web\Request\Request;
+use Gitrub\App\Web\Rest\FromLimitFromRequest;
 use Gitrub\Domain\General\FromLimit;
 use Test\Gitrub\GitrubTestCase;
-use Test\Gitrub\Support\Traits\GetGlobalCleaner;
 
-class FromLimitFromQueryTest extends GitrubTestCase {
-
-	use GetGlobalCleaner;
+class FromLimitFromRequestTest extends GitrubTestCase {
 
 	public static function dataProviderForTestFromLimit(): \Generator {
 		yield 'without from and limit - should get defaults' => [
@@ -36,8 +34,10 @@ class FromLimitFromQueryTest extends GitrubTestCase {
 
 	/** @dataProvider dataProviderForTestFromLimit */
 	public function testFromLimit(?int $from, ?int $limit, FromLimit $expected_from_limit) {
-		$_GET['from'] = $from;
-		$_GET['limit'] = $limit;
-		self::assertEquals($expected_from_limit, (new FromLimitFromQuery(0, 50))->fromLimit());
+	    $request = new Request(
+	        query: ['from' => $from, 'limit' => $limit],
+            body: null,
+        );
+		self::assertEquals($expected_from_limit, (new FromLimitFromRequest(0, 50))->fromLimit($request));
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace Test\Gitrub\App\Web\Rest\Repository\Controller;
 
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Rest\Repository\Controller\Presenter\RepositoryPresenter;
 use Gitrub\App\Web\Rest\Repository\Controller\QueryRepositoryController;
 use Test\Gitrub\Gateway\Repository\MockRepositoryGateway;
@@ -14,7 +15,7 @@ class QueryRepositoryControllerTest extends GitrubTestCase {
 		self::assertEquals(
 			(new RepositoryPresenter($repository))->asResponse(),
 			(new QueryRepositoryController(new MockRepositoryGateway([$repository])))
-				->getRepositoryById($repository->id)->asResponse()
+				->getRepositoryById(Request::empty(), $repository->id)->asResponse()
 		);
 	}
 
@@ -23,7 +24,7 @@ class QueryRepositoryControllerTest extends GitrubTestCase {
 		self::assertEquals(
 			(new RepositoryPresenter($repository))->asResponse(),
 			(new QueryRepositoryController(new MockRepositoryGateway([$repository])))
-				->getRepositoryByFullName($repository->full_name)->asResponse()
+				->getRepositoryByFullName(Request::empty(), $repository->full_name)->asResponse()
 		);
 	}
 }

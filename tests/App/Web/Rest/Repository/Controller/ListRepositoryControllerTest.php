@@ -3,21 +3,19 @@
 namespace Test\Gitrub\App\Web\Rest\Repository\Controller;
 
 use EBANX\Stream\Stream;
+use Gitrub\App\Web\Request\Request;
 use Gitrub\App\Web\Rest\Repository\Controller\ListRepositoryController;
 use Gitrub\App\Web\Rest\Repository\Controller\Presenter\RepositoryCollectionPresenter;
 use Gitrub\Domain\Repository\Collection\RepositoryCollection;
 use Test\Gitrub\Gateway\Repository\MockRepositoryGateway;
 use Test\Gitrub\GitrubTestCase;
-use Test\Gitrub\Support\Traits\GetGlobalCleaner;
 
 class ListRepositoryControllerTest extends GitrubTestCase {
-
-	use GetGlobalCleaner;
 
 	public function testListRepositoriesWithDefaultParams(): void {
 		$repositories = $this->faker->createsABunchOfRepositories(n_repositories: 51);
 		$response = (new ListRepositoryController(new MockRepositoryGateway($repositories)))
-			->listRepositories()
+			->listRepositories(Request::empty())
 			->asResponse();
 
 		$expected_response = (new RepositoryCollectionPresenter(
@@ -31,11 +29,8 @@ class ListRepositoryControllerTest extends GitrubTestCase {
 
 	public function testListRepositoriesPassingParams(): void {
 		$repositories = $this->faker->createsABunchOfRepositories(n_repositories: 12);
-		$_GET['from'] = $repositories[0]->id + 1;
-		$_GET['limit'] = 10;
-
-		$response = (new ListRepositoryController(new MockRepositoryGateway($repositories)))
-			->listRepositories()
+        $response = (new ListRepositoryController(new MockRepositoryGateway($repositories)))
+			->listRepositories(new Request(query: ['from' => $repositories[0]->id + 1, 'limit' => 10]))
 			->asResponse();
 
 		$expected_response = (new RepositoryCollectionPresenter(
@@ -50,7 +45,7 @@ class ListRepositoryControllerTest extends GitrubTestCase {
 	public function testListForkRepositoriesWithDefaultParams(): void {
 		$repositories = $this->faker->createsABunchOfRepositories(n_repositories: 51, fork: true);
 		$response = (new ListRepositoryController(new MockRepositoryGateway($repositories)))
-			->listForkRepositories()
+			->listForkRepositories(Request::empty())
 			->asResponse();
 
 		$expected_response = (new RepositoryCollectionPresenter(
@@ -65,11 +60,8 @@ class ListRepositoryControllerTest extends GitrubTestCase {
 	public function testListForkRepositoriesPassingParams(): void {
 		$non_fork_repositories = $this->faker->createsABunchOfRepositories(n_repositories: 10);
 		$fork_repositories = $this->faker->createsABunchOfRepositories(n_repositories: 12, fork: true);
-		$_GET['from'] = $fork_repositories[0]->id + 1;
-		$_GET['limit'] = 10;
-
-		$response = (new ListRepositoryController(new MockRepositoryGateway(array_merge($non_fork_repositories, $fork_repositories))))
-			->listForkRepositories()
+        $response = (new ListRepositoryController(new MockRepositoryGateway(array_merge($non_fork_repositories, $fork_repositories))))
+			->listForkRepositories(new Request(query: ['from' => $fork_repositories[0]->id + 1, 'limit' => 10]))
 			->asResponse();
 
 		$expected_response = (new RepositoryCollectionPresenter(
@@ -85,7 +77,7 @@ class ListRepositoryControllerTest extends GitrubTestCase {
 		$owner = $this->faker->user();
 		$repositories = $this->faker->createsABunchOfRepositories(n_repositories: 51, owner: $owner);
 		$response = (new ListRepositoryController(new MockRepositoryGateway($repositories)))
-			->listRepositoriesFromOwner($owner->id)
+			->listRepositoriesFromOwner(Request::empty(), $owner->id)
 			->asResponse();
 
 		$expected_response = (new RepositoryCollectionPresenter(
@@ -101,13 +93,10 @@ class ListRepositoryControllerTest extends GitrubTestCase {
 		$repositories_other_owners = $this->faker->createsABunchOfRepositories(n_repositories: 10);
 		$owner = $this->faker->user();
 		$repositories_from_owner = $this->faker->createsABunchOfRepositories(n_repositories: 12, owner: $owner);
-		$_GET['from'] = $repositories_from_owner[0]->id + 1;
-		$_GET['limit'] = 10;
-
-		$response = (new ListRepositoryController(new MockRepositoryGateway(
+        $response = (new ListRepositoryController(new MockRepositoryGateway(
 			array_merge($repositories_other_owners, $repositories_from_owner)
 		)))
-			->listRepositoriesFromOwner($owner->id)
+			->listRepositoriesFromOwner(new Request(query: ['from' => $repositories_from_owner[0]->id + 1, 'limit' => 10]), $owner->id)
 			->asResponse();
 
 		$expected_response = (new RepositoryCollectionPresenter(
@@ -122,7 +111,7 @@ class ListRepositoryControllerTest extends GitrubTestCase {
 	public function testListRepositoriesWithNameWithDefaultParams(): void {
 		$repositories = $this->faker->createsABunchOfRepositories(n_repositories: 51, name: 'name');
 		$response = (new ListRepositoryController(new MockRepositoryGateway($repositories)))
-			->listRepositoriesWithName('name')
+			->listRepositoriesWithName(Request::empty(),'name')
 			->asResponse();
 
 		$expected_response = (new RepositoryCollectionPresenter(
@@ -137,13 +126,10 @@ class ListRepositoryControllerTest extends GitrubTestCase {
 	public function testListRepositoriesWithNamePassingParams(): void {
 		$repositories_other_names = $this->faker->createsABunchOfRepositories(n_repositories: 10);
 		$repositories_with_name = $this->faker->createsABunchOfRepositories(n_repositories: 51, name: 'name');
-		$_GET['from'] = $repositories_with_name[0]->id + 1;
-		$_GET['limit'] = 10;
-
-		$response = (new ListRepositoryController(new MockRepositoryGateway(
+        $response = (new ListRepositoryController(new MockRepositoryGateway(
 			array_merge($repositories_other_names, $repositories_with_name)
 		)))
-			->listRepositoriesWithName('name')
+			->listRepositoriesWithName(new Request(query: ['from' => $repositories_with_name[0]->id + 1, 'limit' => 10]), 'name')
 			->asResponse();
 
 		$expected_response = (new RepositoryCollectionPresenter(
