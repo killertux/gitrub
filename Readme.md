@@ -13,7 +13,7 @@ The third layer is the APP Layer. Here lies the UI and glue logic. This layer is
 
 ### Running
 
-To run it first you need to copy `env.dev.example.php` to `env.dev.php`. Edit this file to add your [github personal access token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) if you want to. Gitrub can be executed without this credentials but it will be limited in the number of requests that it can do to Github API.
+To run it first you need to copy `config/env.dev.example.php` to `config/env.dev.php`. Edit this file to add your [github personal access token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) if you want to. Gitrub can be executed without this credentials but it will be limited in the number of requests that it can do to Github API.
 
 After coping the env file, you can simply execute `docker-compose up` in the root directory.
 
@@ -33,7 +33,7 @@ Gitrub also provides a GraphQL API. This API is available over the URI `/graphql
 
 The scrapping can be triggered from three places: the Rest API, the GraphQL API and the CLI. Also, there is a cron job that handles automatic scrapping of data.
 
-You can edit the crontab file in `cron/crontab`. Notice, if you change the crontab file, you need to rebuild the docker image before re-upping the services.
+You can edit the crontab file in `cron/crontab`. Notice that if you change the crontab file, you need to rebuild the docker image before re-upping the services.
 You can do this by calling `docker-compose build` and then `docker-compose up` again.
 
 ### Running tests
