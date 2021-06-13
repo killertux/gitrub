@@ -25,9 +25,13 @@ Gitrub provides some console commands. To execute them form inside docker, you c
 
 Gitrub provides a Rest API to query all scraped data. There is a postman resource collection in the resource folder if you want more details.
 
+### GraphQL API
+
+Gitrub also provides a GraphQL API. This API is available over the URI `/graphql`. For more information, you can use a tool like [GraphiQL](https://github.com/graphql/graphiql) or [Altair GraphQL](https://altair.sirmuel.design/).
+
 ### Scrapper
 
-The scrapping can be triggered from two places: the API and the CLI. Also, there is a cron job that handles automatic scrapping of data.
+The scrapping can be triggered from three places: the Rest API, the GraphQL API and the CLI. Also, there is a cron job that handles automatic scrapping of data.
 
 You can edit the crontab file in `cron/crontab`. Notice, if you change the crontab file, you need to rebuild the docker image before re-upping the services.
 You can do this by calling `docker-compose build` and then `docker-compose up` again.
